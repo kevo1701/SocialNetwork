@@ -1,0 +1,72 @@
+Create Table Users (
+user_id int NOT NULL Identity(1,1) Primary Key,
+email varchar(255) NOT NULL,
+username varchar(25) NOT NULL,
+password varchar(255) NOT NULL,
+first_name varchar(255) NOT NULL,
+last_name varchar(255) NOT NULL,
+gender_id int NOT NULL,
+city_id int ,
+profile_picture_url varchar(255),
+birth_date DATE NOT NULL, 
+date_created DATE NOT NULL,
+date_updated DATE,
+active bit  NOT NULL DEFAULT 0,
+activation_key varchar(255) NOT NULL,
+UNIQUE (email),
+UNIQUE (username)
+);
+
+CREATE TABLE Posts(
+post_id int NOT NULL Identity(1,1) Primary Key,
+user_id int NOT NULL,
+description varchar(max) NOT NULL,
+date_created DATE NOT NULL,
+date_updated DATE ,
+Foreign Key (user_id) References Users(user_id)
+);
+
+CREATE TABLE Follow (
+following_id int NOT NULL,
+user_id int NOT NULL,
+date_created DATE NOT NULL,
+user_id_from int NOT NULL,
+user_id_to int NOT NULL,
+Foreign Key (user_id_from) References Users(user_id),
+Foreign Key (user_id_to) References Users(user_id)
+);
+
+CREATE TABLE Comments (
+comment_id int NOT NULL Identity(1,1) Primary Key,
+post_id int NOT NULL,
+user_id int NOT NULL,
+content TEXT NOT NULL,
+date_created DATE NOT NULL,
+date_updated DATE ,
+Foreign Key (post_id) References Posts(post_id),
+Foreign Key (user_id) References Users(user_id)
+);
+
+CREATE TABLE Messages(
+message_id int NOT NULL Identity(1,1) Primary Key,
+user_id_from int NOT NULL,
+user_id_to int NOT NULL,
+content TEXT NOT NULL,
+date_created DATE NOT NULL,
+Foreign Key (user_id_from) References Users(user_id),
+Foreign Key (user_id_to) References Users(user_id)
+);
+
+CREATE TABLE Likes(
+user_id int NOT NULL Identity(1,1) Primary Key,
+post_id int NOT NULL,
+date_created DATE NOT NULL
+FOREIGN KEY (post_id) REFERENCES Posts(post_id),
+FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE City (
+city_id int NOT NULL Identity(1,1) Primary Key,
+name varchar(100) NOT NULL, 
+UNIQUE (name)
+);
